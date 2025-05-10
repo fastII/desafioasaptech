@@ -31,14 +31,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.8.3
-          
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::418463409984:role/github-actions-fastii-pipeline
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          audience: sts.amazonaws.com
-          aws-region: us-east-1
 
       - name: Generate SSH Key
         run: |
@@ -58,6 +50,14 @@ jobs:
           echo "TF_VAR_key_name=${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_public_key_path=terraform/keys/${{ env.SSH_KEY_NAME }}.pub" >> $GITHUB_ENV
           echo "TF_VAR_private_key_path=terraform/keys/${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
+          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::418463409984:role/github-actions-fastii-pipeline
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          audience: sts.amazonaws.com
+          aws-region: us-east-1
 
       - name: Initialize Terraform
         working-directory: terraform
