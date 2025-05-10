@@ -34,6 +34,7 @@ jobs:
 
       - name: Generate SSH Key
         run: |
+          mkdir -p terraform/keys
           ssh-keygen -t rsa -b 4096 -f ~/.ssh/${{ env.SSH_KEY_NAME }} -N ""
           echo "SSH key generated:"
           ls ~/.ssh/
