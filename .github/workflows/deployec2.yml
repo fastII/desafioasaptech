@@ -30,11 +30,10 @@ jobs:
           terraform_version: 1.8.3
           
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::418463409984:role/github-actions-fastii-pipeline 
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ inputs.aws-assume-role-arn }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: us-east-1
 
       - name: Generate SSH Key
