@@ -3,13 +3,18 @@ variable "region" {
 }
 
 variable "key_name" {
-  default = "terraform/keys/minikube-key"
+  default = "minikube-key"
   description = "Nome da chave pública existente no AWS EC2"
 }
 
 variable "public_key_path" {
   default     = "terraform/keys/minikube-key.pub"
   description = "Caminho local do arquivo .pub"
+}
+
+variable "private_key_path" {
+  default     = "terraform/keys/minikube-key"
+  description = "Caminho da chave privada"
 }
 
 variable "ami_id" {

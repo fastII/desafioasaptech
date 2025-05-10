@@ -5,5 +5,6 @@ module "ec2_minikube" {
   instance_type   = "t2.medium"
   key_name        = var.key_name
   public_key_path = var.public_key_path
+  private_key_path  = var.private_key_path
   ami_id          = var.ami_id
 }
