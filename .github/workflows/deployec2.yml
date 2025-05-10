@@ -32,26 +32,42 @@ jobs:
         with:
           terraform_version: 1.8.3
 
+      #- name: Generate SSH Key
+      #  run: |
+      #    echo "Generating SSH key..."
+      #    ssh-keygen -t rsa -b 4096 -f ~/.ssh/${{ env.SSH_KEY_NAME }} -N ""
+      #    echo "SSH key generated:"
+      #    ls ~/.ssh/
+#
+      #- name: Export Terraform Key Files
+      #  run: |
+      #    mkdir -p terraform/keys
+      #    cp ~/.ssh/${{ env.SSH_KEY_NAME }} terraform/keys/
+      #    cp ~/.ssh/${{ env.SSH_KEY_NAME }}.pub terraform/keys/
+      #    ls -laht terraform/keys/
+      #  shell: bash
+
       - name: Generate SSH Key
         run: |
-          echo "Generating SSH key..."
-          ssh-keygen -t rsa -b 4096 -f ~/.ssh/${{ env.SSH_KEY_NAME }} -N ""
-          echo "SSH key generated:"
-          ls ~/.ssh/
+          mkdir -p terraform/keys
+          ssh-keygen -t rsa -b 4096 -f terraform/keys/${SSH_KEY_NAME} -N ""
 
-      - name: Export Terraform Key Files
+      - name: Generate SSH Key
         run: |
           mkdir -p terraform/keys
-          cp ~/.ssh/${{ env.SSH_KEY_NAME }} terraform/keys/
-          cp ~/.ssh/${{ env.SSH_KEY_NAME }}.pub terraform/keys/
-          ls -laht terraform/keys/
-        shell: bash
+          ssh-keygen -t rsa -b 4096 -f terraform/keys/${SSH_KEY_NAME} -N ""
+            - name: Set Terraform ENV vars
+              run: |
+                echo "TF_VAR_key_name=${SSH_KEY_NAME}" >> $GITHUB_ENV
+                echo "TF_VAR_public_key_path=keys/${SSH_KEY_NAME}.pub" >> $GITHUB_ENV
+                echo "TF_VAR_private_key_path=keys/${SSH_KEY_NAME}" >> $GITHUB_ENV
 
-      - name: Set Terraform ENV vars
-        run: |
-          echo "TF_VAR_key_name=${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
-          echo "TF_VAR_public_key_path=/keys/${{ env.SSH_KEY_NAME }}.pub" >> $GITHUB_ENV
-          echo "TF_VAR_private_key_path=/keys/${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
+
+      #- name: Set Terraform ENV vars
+      #  run: |
+      #    echo "TF_VAR_key_name=${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
+      #    echo "TF_VAR_public_key_path=/keys/${{ env.SSH_KEY_NAME }}.pub" >> $GITHUB_ENV
+      #    echo "TF_VAR_private_key_path=/keys/${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
           
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
