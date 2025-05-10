@@ -8,7 +8,7 @@ variable "key_name" {
 }
 
 variable "public_key_path" {
-  default     = "terraform/keys/minikube-key.pub"
+  default     = "/terraform/keys/minikube-key.pub"
   description = "Caminho local do arquivo .pub"
 }
 
