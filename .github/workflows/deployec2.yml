@@ -1,0 +1,65 @@
+name: Deploy EC2 + Minikube via Terraform
+
+on:
+  push:
+    branches:
+      - main  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_instance_name: minikube-node
+      TF_VAR_instance_type: t3.medium
+      TF_VAR_ami_id: ami-0c2b8ca1dad447f8a # Amazon Linux 2
+      SSH_KEY_NAME: minikube-key
+      aws-assume-role: arn:aws:iam::418463409984:role/github-actions-fastii-pipeline # Replace with your role ARN
+      aws-region: us-east-1
+      aws-statefile-s3-bucket: desafio-us-east-1-terraform
+      aws-lock-dynamodb-table: terraform-state-lock-dynamo 
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Generate SSH Key
+        run: |
+          ssh-keygen -t rsa -b 4096 -f ~/.ssh/${{ env.SSH_KEY_NAME }} -N ""
+          echo "SSH key generated:"
+          ls ~/.ssh/
+
+      - name: Export Terraform Key Files
+        run: |
+          mkdir -p terraform/keys
+          cp ~/.ssh/${{ env.SSH_KEY_NAME }} terraform/keys/
+          cp ~/.ssh/${{ env.SSH_KEY_NAME }}.pub terraform/keys/
+        shell: bash
+
+      - name: Set Terraform ENV vars
+        run: |
+          echo "TF_VAR_key_name=${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_public_key_path=terraform/keys/${{ env.SSH_KEY_NAME }}.pub" >> $GITHUB_ENV
+          echo "TF_VAR_private_key_path=terraform/keys/${{ env.SSH_KEY_NAME }}" >> $GITHUB_ENV
+
+      - name: Initialize Terraform
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Output EC2 IP
+        working-directory: terraform
+        run: terraform output public_ip
