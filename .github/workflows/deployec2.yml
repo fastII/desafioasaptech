@@ -34,18 +34,18 @@ jobs:
 
       - name: Generate SSH Key
         run: |
-          mkdir -p terraform/keys
-          ssh-keygen -t rsa -b 4096 -f terraform/keys/${{ env.SSH_KEY_NAME }} -N ""
+          echo "Generating SSH key..."
+          ssh-keygen -t rsa -b 4096 -f ~/.ssh/${{ env.SSH_KEY_NAME }} -N ""
           echo "SSH key generated:"
-          ls terraform/keys/
+          ls ~/.ssh/
 
-      #- name: Export Terraform Key Files
-      #  run: |
-      #    mkdir -p terraform/keys
-      #    cp ~/.ssh/${{ env.SSH_KEY_NAME }} terraform/keys/
-      #    cp ~/.ssh/${{ env.SSH_KEY_NAME }}.pub terraform/keys/
-      #    ls -laht terraform/keys/
-      #  shell: bash
+      - name: Export Terraform Key Files
+        run: |
+          mkdir -p terraform/keys
+          cp ~/.ssh/${{ env.SSH_KEY_NAME }} terraform/keys/
+          cp ~/.ssh/${{ env.SSH_KEY_NAME }}.pub terraform/keys/
+          ls -laht terraform/keys/
+        shell: bash
 
       - name: Set Terraform ENV vars
         run: |
