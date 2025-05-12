@@ -20,7 +20,6 @@ resource "null_resource" "wait_for_ssh" {
       private_key = file(var.private_key_path)
       host        = module.ec2_minikube.public_ip
       timeout     = "2m"
-      retries     = 10
     }
   }
 
@@ -41,7 +40,6 @@ resource "null_resource" "upload_helm_chart" {
       private_key = file(var.private_key_path)
       host        = module.ec2_minikube.public_ip
       timeout     = "3m"
-      retries    = 10
     }
   }
 
