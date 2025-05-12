@@ -8,21 +8,9 @@ No desafio proposto pela ASAPTECH a ideia era criar um ambiente ec2 via Terrafor
 
   No desafio foi falado que precisaríamos guardar o statefiles .tf em um bucket, este bucket foi provisionado com o nome  desafio-us-east-1-terraform e fomos além. Configuramos o LockID do DynamoDB, isto é uma melhoria em provisionamentos terraform para a Cloud, ou seja, travamos em lock alterações simultâneas, segue imagem em anexo:
 
-  ****<img width="470" alt="image" src="https://github.com/user-attachments/assets/984f9643-7931-4100-a19a-d3596d86fbdc" />
+  <img width="470" alt="image" src="https://github.com/user-attachments/assets/984f9643-7931-4100-a19a-d3596d86fbdc" />
 
   Segue abaixo o .tf para criar o bucket e a tabela do DynamoDB
-
-main.tf
-
-resource "aws_s3_bucket" "bucketstate" {
-  bucket = var.bucket_name
-
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
-}
 
 # Habilitando o versionamento (NOVO FORMATO)
 
