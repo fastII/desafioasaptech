@@ -1,6 +1,6 @@
 
 module "ec2_minikube" {
-  source          = "../terraform/modules/ec2_minikube"
+  source          = "./modules/ec2_minikube"
   instance_name   = "minikube-node"
   instance_type   = "t2.medium"
   key_name        = var.key_name
