@@ -136,15 +136,25 @@ Por fim segue o ambiente provisionado na ec2 conforme solicitado
 
 <img width="410" alt="image" src="https://github.com/user-attachments/assets/deccc915-2ab1-42af-9b04-2577928a271e" />
 
+
 <img width="529" alt="image" src="https://github.com/user-attachments/assets/195a29a6-14e5-4666-9e17-96c5ac56add3" />
+
 
 <img width="824" alt="image" src="https://github.com/user-attachments/assets/fae6a729-c388-4610-92a7-8dda69762a31" />
 
+
 <img width="428" alt="image" src="https://github.com/user-attachments/assets/f064baca-35bb-4793-928d-09a5ee899572" />
+
+
+
+<img width="537" alt="image" src="https://github.com/user-attachments/assets/c14d7d73-64de-4cda-aceb-4f0539e1cb01" />
+
 
 Por fim fiz um exec ssh no po para validar o serviço no ar, segue abaixo
 
+
 <img width="611" alt="image" src="https://github.com/user-attachments/assets/1b219985-0057-45f4-a23e-26c7decf365a" />
+
 
 
 
