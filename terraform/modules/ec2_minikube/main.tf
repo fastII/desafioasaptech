@@ -45,7 +45,7 @@ resource "aws_instance" "minikube" {
 
 }
 
-
+# SG for Minikube
 resource "aws_security_group" "minikube_sg" {
   name        = "minikube-sg"
   description = "Allow SSH and HTTP"

@@ -1,4 +1,6 @@
 
+# Module para criar a EC2
+
 module "ec2_minikube" {
   source          = "./modules/ec2_minikube"
   instance_name   = "minikube-node"
@@ -14,12 +16,13 @@ resource "null_resource" "wait_for_ssh" {
   provisioner "remote-exec" {
     inline = ["echo EC2 ready"]
 
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file(var.private_key_path)
-      host        = module.ec2_minikube.public_ip
-      timeout     = "2m"
+      #  SSH Connection
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file(var.private_key_path)
+    host        = self.public_ip
+    timeout     = "2m"
     }
   }
 
@@ -35,11 +38,11 @@ resource "null_resource" "upload_helm_chart" {
     destination = "/home/ec2-user/chart"
 
     connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file(var.private_key_path)
-      host        = module.ec2_minikube.public_ip
-      timeout     = "3m"
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file(var.private_key_path)
+    host        = self.public_ip
+    timeout     = "2m"
     }
   }
 
@@ -55,10 +58,11 @@ resource "null_resource" "helm_install" {
     ]
 
     connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file(var.private_key_path)
-      host        = module.ec2_minikube.public_ip
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file(var.private_key_path)
+    host        = self.public_ip
+    timeout     = "2m"
     }
   }
 
