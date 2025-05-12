@@ -15,7 +15,7 @@ module "ec2_minikube" {
 resource "null_resource" "wait_for_ssh" {
   provisioner "remote-exec" {
     inline = [
-      "echo aguardando EC2...",
+      "echo PRIVATE_KEY_PATH={{ var.private_key_path }}",
       "sleep 30",
       "echo EC2 conectada"
     ]
