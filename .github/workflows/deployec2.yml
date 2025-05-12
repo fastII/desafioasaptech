@@ -18,7 +18,7 @@ jobs:
       TF_VAR_instance_type: t3.medium
       TF_VAR_ami_id: ami-0c2b8ca1dad447f8a # Amazon Linux 2
       SSH_KEY_NAME: minikube-key
-      aws-region: us-east-1
+      AWS_REGION: us-east-1
       aws-statefile-s3-bucket: desafio-us-east-1-terraform
       aws-lock-dynamodb-table: terraform-state-lock-dynamo 
 
@@ -71,7 +71,7 @@ jobs:
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           audience: sts.amazonaws.com
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Initialize Terraform
         working-directory: terraform
