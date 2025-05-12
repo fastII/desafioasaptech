@@ -25,49 +25,10 @@ resource "aws_s3_bucket" "bucketstate" {
 }
 
 # Habilitando o versionamento (NOVO FORMATO)
-resource "aws_s3_bucket_versioning" "bucket_versioning" {
-  bucket = aws_s3_bucket.bucketstate.id
 
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name = var.dynamodb_table_name
-  hash_key = var.hash_key
-  read_capacity = 20
-  write_capacity = 20
- 
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
+<img width="394" alt="image" src="https://github.com/user-attachments/assets/24fd888f-4db5-4e92-a933-d3459bb8726b" />
 
-variables.tf
-variable "bucket_name" {
-  default     = "desafio-us-east-1-terraform"
-  description = "The name of the bucket to create"
-}
-variable "bucket_region" {
-  default     = "us-east-1"
-  description = "The region to create the bucket in"
-}
-#variable "bucket_versioning" {
-#  default     = true
-#  description = "Enable versioning for the S3 bucket"
-#}
-variable "dynamodb_table_name" {
-  default     = "terraform-state-lock-dynamodb"
-  description = "The name of the DynamoDB table to create for state locking"
-}
-
-variable "hash_key" {
-  default     = "LockID"
-  description = "The hash key for the DynamoDB table"
-  
-}
-
+<img width="479" alt="image" src="https://github.com/user-attachments/assets/976fd956-254d-4a20-af55-b9ab9f6d35d3" />
 
 
 * Temos a seguinte estrutura de diretórios nesse repositório
