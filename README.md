@@ -108,21 +108,21 @@ jobs:
         working-directory: terraform
         run: terraform output public_ip
 
-Passamos a criação das chaves .pub para que o agent conseguisse acessar a máquina via ssh e rodar os comandos para instalação dos pacotes necessários pós provisionamento, além tentamos subir os arquivos da estrutura do helm chart para a máquina, mas batemos em alguns impecilhos e por falta de tempo resolvemos fazer o upload via ssh.
+Passamos a criação das chaves .pub para que o agent conseguisse acessar a máquina via ssh e rodar os comandos para instalação dos pacotes necessários pós provisionamento, além disto tentamos subir os arquivos da estrutura do helm chart para a máquina via terraform, mas batemos em alguns impecilhos e por falta de tempo resolvemos fazer o upload via ssh.
 
-No desafio proposto tivemos que corrigir as devidas falhas nos manifestos do helm, são eles:
+No desafio fala também para corrigir as devidas falhas nos manifestos do helm, são eles:
 
 Erros encontrados no arquivos de manifestos:
 
 1. YAML inválido por problemas de indentação no deployment.yaml
 O campo spec de template está mal indentado.
 
-O campo containers está dentro de spec errado (está sob metadata).
+2. O campo containers está dentro de spec errado (está sob metadata).
 
-imagem fixa no arquivo deployment
+3. imagem fixa no arquivo deployment
 
 
-→ Isso não deve ser hardcoded num Helm template. Deve vir de values.yaml.
+Obs.: Como melhor prática não devemos passar arquivos Hard Codeded  nos manifestos do helm
 
 Como diferencial no desafio foi proposto que deixasse o helm como um template podendo ser utilizado por qualquer imagem
 
