@@ -9,6 +9,25 @@ module "ec2_minikube" {
   ami_id          = var.ami_id
 }
 
+# Readness para SSH
+resource "null_resource" "wait_for_ssh" {
+  provisioner "remote-exec" {
+    inline = ["echo EC2 ready"]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = module.ec2_minikube.public_ip
+      timeout     = "2m"
+      retries     = 10
+    }
+  }
+
+  depends_on = [module.ec2_minikube]
+}
+
+
 # Envia o chart para a EC2
 
 resource "null_resource" "upload_helm_chart" {
@@ -21,10 +40,12 @@ resource "null_resource" "upload_helm_chart" {
       user        = "ec2-user"
       private_key = file(var.private_key_path)
       host        = module.ec2_minikube.public_ip
+      timeout     = "3m"
+      retries    = 10
     }
   }
 
-  depends_on = [module.ec2_minikube]
+ depends_on = [null_resource.wait_for_ssh]
 }
 
 # Executa helm install após upload
