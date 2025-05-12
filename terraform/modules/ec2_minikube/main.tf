@@ -2,7 +2,6 @@ resource "aws_key_pair" "default" {
   key_name   = var.key_name
   public_key = file(var.public_key_path)
 }
-# Install rsource EC2'
 
 resource "aws_instance" "minikube" {
   ami                         = var.ami_id
@@ -23,6 +22,11 @@ resource "aws_instance" "minikube" {
     host        = self.public_ip
   }
 
+  # Envia o Helm chart local para a EC2
+  provisioner "file" {
+    source      = "helm-chart"
+    destination = "/home/ec2-user/chart"
+  }
 
   #  Instala pacotes e Minikube
   provisioner "remote-exec" {
@@ -43,9 +47,16 @@ resource "aws_instance" "minikube" {
     ]
   }
 
+  #  Executa helm install com o chart enviado
+  provisioner "remote-exec" {
+    inline = [
+      "cd /home/ec2-user",
+      "helm install myapp ./chart --namespace default"
+    ]
+  }
 }
 
-# SG for Minikube
+
 resource "aws_security_group" "minikube_sg" {
   name        = "minikube-sg"
   description = "Allow SSH and HTTP"
