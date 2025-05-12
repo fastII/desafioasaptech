@@ -14,15 +14,18 @@ module "ec2_minikube" {
 # Readness para SSH
 resource "null_resource" "wait_for_ssh" {
   provisioner "remote-exec" {
-    inline = ["echo EC2 ready"]
+    inline = [
+      "echo aguardando EC2...",
+      "sleep 30",
+      "echo EC2 conectada"
+    ]
 
-      #  SSH Connection
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file(var.private_key_path)
-    host        = self.public_ip
-    timeout     = "2m"
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = module.ec2_minikube.public_ip
+      timeout     = "3m"
     }
   }
 
@@ -38,11 +41,11 @@ resource "null_resource" "upload_helm_chart" {
     destination = "/home/ec2-user/chart"
 
     connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file(var.private_key_path)
-    host        = self.public_ip
-    timeout     = "2m"
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = module.ec2_minikube.public_ip
+      timeout     = "3m"
     }
   }
 
@@ -58,11 +61,10 @@ resource "null_resource" "helm_install" {
     ]
 
     connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file(var.private_key_path)
-    host        = self.public_ip
-    timeout     = "2m"
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = module.ec2_minikube.public_ip
     }
   }
 
