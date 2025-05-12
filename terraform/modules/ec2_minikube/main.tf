@@ -22,11 +22,6 @@ resource "aws_instance" "minikube" {
     host        = self.public_ip
   }
 
-  # Envia o Helm chart local para a EC2
-  provisioner "file" {
-    source      = "helm-chart"
-    destination = "/home/ec2-user/chart"
-  }
 
   #  Instala pacotes e Minikube
   provisioner "remote-exec" {
@@ -36,7 +31,7 @@ resource "aws_instance" "minikube" {
       "sudo amazon-linux-extras install docker -y",
       "sudo systemctl start docker",
       "sudo usermod -aG docker ec2-user",
-      # Install Minikube and kubectl
+      # Instala o Minikube e o kubectl
       "curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64",
       "sudo install minikube-linux-amd64 /usr/local/bin/minikube",
       "curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl",
@@ -47,13 +42,6 @@ resource "aws_instance" "minikube" {
     ]
   }
 
-  #  Executa helm install com o chart enviado
-  provisioner "remote-exec" {
-    inline = [
-      "cd /home/ec2-user",
-      "helm install myapp ./chart --namespace default"
-    ]
-  }
 }
 
 
