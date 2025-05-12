@@ -14,34 +14,44 @@ resource "aws_instance" "minikube" {
     Name = var.instance_name
   }
 
-  # ✅ bloco connection fora do provisioner
+  #  SSH Connection
   connection {
     type        = "ssh"
-    user        = "ec2-user" # ou "ubuntu"
+    user        = "ec2-user"
     private_key = file(var.private_key_path)
     host        = self.public_ip
   }
 
+  # Envia o Helm chart local para a EC2
+  provisioner "file" {
+    source      = "../helm-chart"
+    destination = "/home/ec2-user/chart"
+  }
+
+  #  Instala pacotes e Minikube
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
-      "sudo yum install -y curl conntrack iptables",
+      "sudo yum install -y curl conntrack iptables git",
       "sudo amazon-linux-extras install docker -y",
       "sudo systemctl start docker",
       "sudo usermod -aG docker ec2-user",
-       # Instala Minikube
+      # Install Minikube and kubectl
       "curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64",
       "sudo install minikube-linux-amd64 /usr/local/bin/minikube",
-
-      # Instala kubectl
       "curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl",
       "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
-
-      # ✅ Instala Helm
-      "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash",
-
-      # Inicializa Minikube
+      # Install Helm
+      "curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash",
       "newgrp docker <<EONGROUP\nminikube start --driver=docker\nEONGROUP"
+    ]
+  }
+
+  #  Executa helm install com o chart enviado
+  provisioner "remote-exec" {
+    inline = [
+      "cd /home/ec2-user",
+      "helm install myapp ./chart --namespace default"
     ]
   }
 }
