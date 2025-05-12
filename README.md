@@ -72,18 +72,8 @@ variable "hash_key" {
 
 * Temos a seguinte estrutura de diretórios nesse repositório
 
-  terraform/
-├── main.tf               
-├── variables.tf
-├── modules/
-│   └── ec2_minikube/
-│       ├── main.tf      
-│       ├── variables.tf
-│       └── outputs.tf
-├── helm-chart/
-│   ├── Chart.yaml
-│   ├── values.yaml
-│   └── templates/
+<img width="493" alt="image" src="https://github.com/user-attachments/assets/c84f373e-3f8a-4803-99aa-11c1a44fe3f1" />
+
 
 Pode notar na estrutura acima que criamos o módulo EC2, isto também faz parte das boas práticas do Terraform, pois os módulos podem ser reutilizados quando necessários.
 
