@@ -22,11 +22,6 @@ resource "aws_instance" "minikube" {
     host        = self.public_ip
   }
 
-  # Envia o Helm chart local para a EC2
-  provisioner "file" {
-    source      = "../helm-chart"
-    destination = "/home/ec2-user/chart"
-  }
 
   #  Instala pacotes e Minikube
   provisioner "remote-exec" {
