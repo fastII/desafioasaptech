@@ -13,7 +13,7 @@ module "ec2_minikube" {
 
 resource "null_resource" "upload_helm_chart" {
   provisioner "file" {
-    source      = "../helm-chart"
+    source      = "helm-chart"
     destination = "/home/ec2-user/chart"
 
     connection {
