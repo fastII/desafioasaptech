@@ -42,13 +42,6 @@ resource "aws_instance" "minikube" {
     ]
   }
 
-  #  Executa helm install com o chart enviado
-  provisioner "remote-exec" {
-    inline = [
-      "cd /home/ec2-user",
-      "helm install myapp ./chart --namespace default"
-    ]
-  }
 }
 
 

@@ -9,6 +9,8 @@ module "ec2_minikube" {
   ami_id          = var.ami_id
 }
 
+# Envia o chart para a EC2
+
 resource "null_resource" "upload_helm_chart" {
   provisioner "file" {
     source      = "../helm-chart"
@@ -23,4 +25,23 @@ resource "null_resource" "upload_helm_chart" {
   }
 
   depends_on = [module.ec2_minikube]
+}
+
+# Executa helm install após upload
+resource "null_resource" "helm_install" {
+  provisioner "remote-exec" {
+    inline = [
+      "cd /home/ec2-user",
+      "helm install myapp ./chart --namespace default"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.private_key_path)
+      host        = module.ec2_minikube.public_ip
+    }
+  }
+
+  depends_on = [null_resource.upload_helm_chart]
 }
