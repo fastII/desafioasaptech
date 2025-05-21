@@ -37,7 +37,7 @@ resource "aws_instance" "minikube" {
       "curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl",
       "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
       # Install Helm
-      "curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash",
+      "sudo curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash",
       "newgrp docker <<EONGROUP\nminikube start --driver=docker\nEONGROUP"
     ]
   }
