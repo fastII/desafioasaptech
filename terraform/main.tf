@@ -3,10 +3,23 @@ locals {
   ssh_key = file(var.private_key_path)
 }
 
+# Module para criar o VPC
+
+module "vpc" {
+  source              = "./modules/vpc"
+  name                = "vpc-dev"
+  cidr                = var.vpc_cidr
+  azs                 = var.azs
+  public_subnets      = var.public_subnets
+  private_subnets     = var.private_subnets
+  environment         = var.environment
+}
+
 # Module para criar a EC2
 
 module "ec2_minikube" {
   source          = "./modules/ec2_minikube"
+  vpc_id          = module.vpc.vpc_id
   instance_name   = "minikube-node"
   instance_type   = "t2.medium"
   key_name        = var.key_name

@@ -8,12 +8,12 @@ variable "key_name" {
 }
 
 variable "public_key_path" {
-  default     = "keys/minikube-key.pub"
+  default     = "C:/Users/anderson.oliveira/Documents/Desafio/minikube-key.pub"
   description = "Caminho local do arquivo .pub"
 }
 
 variable "private_key_path" {
-  default     = "keys/minikube-key"
+  default     = "C:/Users/anderson.oliveira/Documents/Desafio/minikube-key"
   description = "Caminho da chave privada"
 }
 
@@ -21,3 +21,11 @@ variable "ami_id" {
   default     = "ami-0c2b8ca1dad447f8a" # Amazon Linux 2 ou Ubuntu para Minikube
   description = "AMI ID compatível com EC2 + Docker"
 }
+
+variable "environment" {}
+variable "aws_region" {}
+variable "vpc_cidr" {}
+variable "azs" { type = list(string) }
+variable "public_subnets" { type = list(string) }
+variable "private_subnets" { type = list(string) }
+
