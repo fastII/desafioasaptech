@@ -7,8 +7,9 @@ resource "aws_instance" "minikube" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.default.key_name
+  subnet_id                   = var.subnet_id
+  vpc_security_group_ids      = [var.security_group_id]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.minikube_sg.id]
 
   tags = {
     Name = var.instance_name
@@ -44,37 +45,10 @@ resource "aws_instance" "minikube" {
 }
 
 
-resource "aws_security_group" "minikube_sg" {
-  name        = "minikube-sg"
-  description = "Allow SSH and HTTP"
-  vpc_id = var.vpc_id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 30000
-    to_port     = 32767
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-data "aws_vpcs" "all" {}
 
 
 #resource "aws_network_interface_sg_attachment" "attach" {
 #  security_group_id    = aws_security_group.minikube_sg.id
 #  network_interface_id = aws_instance.minikube.primary_network_interface_id
+#  depends_on = [aws_instance.minikube]
 #}

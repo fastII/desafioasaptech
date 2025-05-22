@@ -5,6 +5,7 @@ output "public_ip" {
 }
 
 
-output "vpc_ids" {
-  value = data.aws_vpcs.all.ids
-}
+#output "vpc_ids" {
+#  value = data.aws_vpcs.all.ids
+#}
+

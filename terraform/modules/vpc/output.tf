@@ -1,7 +1,11 @@
 output "vpc_id" {
-  value = module.vpc.vpc_id
+  value = aws_vpc.main.id
 }
 
-output "private_subnets" {
-  value = module.vpc.private_subnets
+output "public_subnet_id" {
+  value = aws_subnet.public.id
+}
+
+output "security_group_id" {
+  value = aws_security_group.minikube_sg.id
 }

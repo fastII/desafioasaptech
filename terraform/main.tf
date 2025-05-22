@@ -1,34 +1,23 @@
-
 locals {
   ssh_key = file(var.private_key_path)
 }
 
-# Module para criar o VPC
-
 module "vpc" {
-  source              = "./modules/vpc"
-  name                = "vpc-dev"
-  cidr                = var.vpc_cidr
-  azs                 = var.azs
-  public_subnets      = var.public_subnets
-  private_subnets     = var.private_subnets
-  environment         = var.environment
+  source = "./modules/vpc"
 }
-
-# Module para criar a EC2
 
 module "ec2_minikube" {
-  source          = "./modules/ec2_minikube"
-  vpc_id          = module.vpc.vpc_id
-  instance_name   = "minikube-node"
-  instance_type   = "t2.medium"
-  key_name        = var.key_name
-  public_key_path = var.public_key_path
+  source            = "./modules/ec2_minikube"
+  instance_name     = "minikube-node"
+  instance_type     = "t2.medium"
+  key_name          = var.key_name
+  public_key_path   = var.public_key_path
   private_key_path  = var.private_key_path
-  ami_id          = var.ami_id
+  ami_id            = var.ami_id
+  subnet_id         = module.vpc.public_subnet_id
+  security_group_id = module.vpc.security_group_id
 }
 
-# Readness para SSH
 resource "null_resource" "wait_for_ssh" {
   provisioner "remote-exec" {
     inline = [
@@ -49,9 +38,6 @@ resource "null_resource" "wait_for_ssh" {
   depends_on = [module.ec2_minikube]
 }
 
-
-# Envia o chart para a EC2
-
 resource "null_resource" "upload_helm_chart" {
   provisioner "file" {
     source      = "helm-chart"
@@ -66,10 +52,9 @@ resource "null_resource" "upload_helm_chart" {
     }
   }
 
- depends_on = [null_resource.wait_for_ssh]
+  depends_on = [null_resource.wait_for_ssh]
 }
 
-# Executa helm install após upload
 resource "null_resource" "helm_install" {
   provisioner "remote-exec" {
     inline = [

@@ -8,12 +8,12 @@ variable "key_name" {
 }
 
 variable "public_key_path" {
-  default     = "C:/Users/anderson.oliveira/Documents/Desafio/minikube-key.pub"
+  default     = "/keys/minikube-key.pub"
   description = "Caminho local do arquivo .pub"
 }
 
 variable "private_key_path" {
-  default     = "C:/Users/anderson.oliveira/Documents/Desafio/minikube-key"
+  default     = "/keys/minikube-key"
   description = "Caminho da chave privada"
 }
 
