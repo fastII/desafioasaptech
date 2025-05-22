@@ -23,6 +23,6 @@ variable "ami_id" {
 }
 
 variable "environment" {}
-variable "aws_region" {}
+#variable "aws_region" {}
 
 
