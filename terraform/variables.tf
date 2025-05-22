@@ -1,4 +1,4 @@
-variable "region" {
+variable "aws_region" {
   default = "us-east-1"
 }
 
@@ -22,7 +22,7 @@ variable "ami_id" {
   description = "AMI ID compatível com EC2 + Docker"
 }
 
-variable "environment" {}
-variable "aws_region" {}
+#variable "environment" {}
+#variable "aws_region" {}
 
 
