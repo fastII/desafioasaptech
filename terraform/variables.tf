@@ -1,4 +1,4 @@
-variable "region" {
+variable "aws_region" {
   default = "us-east-1"
 }
 
@@ -23,6 +23,6 @@ variable "ami_id" {
 }
 
 variable "environment" {}
-
+variable "aws_region" {}
 
 
