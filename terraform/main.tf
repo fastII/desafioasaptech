@@ -4,6 +4,7 @@ locals {
 
 module "vpc" {
   source = "./modules/vpc"
+  environment = var.environment
 }
 
 module "ec2_minikube" {
